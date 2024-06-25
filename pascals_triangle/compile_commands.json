@@ -1,0 +1,5 @@
+[
+  { "directory": "/home/jb/src/cpp-by-example/pascals_triangle/",
+    "arguments": ["/usr/bin/clang++", "-Wall", "-std=c++2a", "-o", "main.o", "main.cpp"],
+    "file": "main.cpp" }
+]
