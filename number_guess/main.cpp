@@ -4,8 +4,14 @@
 #include <iostream>
 #include <limits>
 #include <optional>
+#include <random>
 
-unsigned some_const_number() { return 42; }
+unsigned some_random_number() {
+    std::random_device rd;
+    std::mt19937 engine(rd());
+    std::uniform_int_distribution<int> dist(1, 100);
+    return dist(engine);
+}
 
 std::optional<int> read_number(std::istream &in) {
     int result{};
@@ -37,5 +43,5 @@ int main() {
         return std::format("Your guess was too {}\n",
                            guess < number ? "small" : "big");
     };
-    guess_number(some_const_number(), message);
+    guess_number(some_random_number(), message);
 }
