@@ -1,3 +1,6 @@
+#include <concepts>
+#include <format>
+#include <functional>
 #include <iostream>
 #include <limits>
 #include <optional>
@@ -14,8 +17,8 @@ std::optional<int> read_number(std::istream &in) {
     return {};
 }
 
-void guess_number(int number) {
-    std::optional<int> guess;
+void guess_number(int number, std::invocable<int, int> auto message) {
+    std::optional<int> guess; // C++17
 
     std::cout << "Guess the number.\n>";
     while ((guess = read_number(std::cin))) {
@@ -23,9 +26,16 @@ void guess_number(int number) {
             std::cout << "Well done.\n" << std::endl;
             return;
         }
-        std::cout << guess.value() << " is wrong. Try again\n>";
+        std::cout << message(number, guess.value());
+        std::cout << '>';
     }
-    std::cout << "The number was " << number << std::endl;
+    std::cout << std::format("The number was {}\n", number);
 }
 
-int main() { guess_number(some_const_number()); }
+int main() {
+    auto message = [](int number, int guess) {
+        return std::format("Your guess was too {}\n",
+                           guess < number ? "small" : "big");
+    };
+    guess_number(some_const_number(), message);
+}
