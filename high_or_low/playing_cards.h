@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // prevents header loading more than once
 
 #include <array>
 #include <iostream>
@@ -40,11 +40,22 @@ private:
   Suit suit_{};
 };
 
-std::array<Card, 52> create_deck();
+struct Joker {};
+
+using Deck = std::array<Card, 52>;
+// C++17 std::variant
+using ExtendedDeck = std::array<std::variant<Card, Joker>, 54>;
+
+Deck create_deck();
+ExtendedDeck create_extended_deck();
+template <typename T> void shuffle_deck(T &);
 
 Suit &operator++(Suit &suit);
 std::ostream &operator<<(std::ostream &os, const Card &card);
 
 std::string to_string(const Suit &suit);
 std::string to_string(const FaceValue &value);
+
+bool is_guess_correct(char guess, const Card &current, const Card &next);
+void higher_lower();
 } // namespace cards
